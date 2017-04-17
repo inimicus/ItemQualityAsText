@@ -53,9 +53,18 @@ function IQAT:UpdateTooltip(item, tooltip)
     -- Set Variables
     local itemLink = nil
 
+    --if item:GetParent():GetName() == "ZO_InteractWindowRewardArea" then
+    --itemLink = GetQuestRewardItemLink(item:GetParent():GetName().index, LINK_STYLE_BRACKETS)
+
     -- Check item and selectedItem
-    if not item or not item.dataEntry or not item.dataEntry.data then
+    if not item or item:GetParent() == nil then
         return
+    else 
+        if item:GetParent():GetName() ~= "ZO_InteractWindowRewardArea" then 
+            if not item.dataEntry or not item.dataEntry.data then
+                return
+            end
+        end
     end
 
     -- Check to make sure we haven't already edited the tool tip for this item. Without this duplicate lines are created
@@ -124,39 +133,40 @@ function IQAT:GetItemLink(item)
             --  return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
             --end
 
-            -- If Item is in Player Inventory
-            if parentName == "ZO_PlayerInventoryListContents" then
-                return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
-            end
-
-            -- If Item is in Quickslot
-            if parentName == "ZO_QuickSlotListContents" then
-                return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
-            end
-
-            -- If Item is in Wallet - WTF is wallet?
-            if parentName == "ZO_InventoryWalletListContents" then
-                return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
-            end
-
-            -- If Item is in Deconstruction Window
-            if parentName == "ZO_SmithingTopLevelDeconstructionPanelInventoryBackpackContents" then
-                return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
-            end
-
-            -- If Item is in Improvement Window
-            if parentName == "ZO_SmithingTopLevelImprovementPanelInventoryBackpackContents" then
-                return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
-            end
-
-            -- If Item is in Bank
-            if parentName == "ZO_PlayerBankBackpackContents" then
+            if  parentName == "ZO_PlayerInventoryListContents" or
+                parentName == "ZO_PlayerInventoryBackpackContents" or
+                parentName == "ZO_CraftBagListContents" or
+                parentName == "ZO_GuildBankBackpackContents" or
+                parentName == "ZO_QuickSlotListContents" or
+                parentName == "ZO_SmithingTopLevelDeconstructionPanelInventoryBackpackContents" or
+                parentName == "ZO_SmithingTopLevelImprovementPanelInventoryBackpackContents" or
+                parentName == "ZO_SmithingTopLevelRefinementPanelInventoryBackpackContents" or
+                parentName == "ZO_EnchantingTopLevelInventoryBackpackContents" or
+                parentName == "ZO_PlayerBankBackpackContents" then
                 return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
             end
 
             -- If Item is in Store
             if parentName == "ZO_StoreWindowListContents" then
                 return GetStoreItemLink(item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
+            end
+
+            -- If Item is in Store Buy Back List
+            if parentName == "ZO_BuyBackListContents" then
+                return GetBuybackItemLink(item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
+            end
+
+            -- If Item is in Rewards Window
+            if parentName == "ZO_InteractWindowRewardArea" then
+                local mouseOverControl = moc()
+                rewardItem = mouseOverControl.index
+                d(GetQuestRewardItemLink(rewardItem, LINK_STYLE_DEFAULT))
+                return GetQuestRewardItemLink(rewardItem, LINK_STYLE_DEFAULT)
+            end
+
+            -- If item is in a Loot Container
+            if parentName == "ZO_LootAlphaContainerListContents" then
+                return GetLootItemLink(item.dataEntry.data.lootId, LINK_STYLE_DEFAULT)
             end
 
             -- If Item is in Guild Store
@@ -176,17 +186,9 @@ function IQAT:GetItemLink(item)
                 return GetTradingHouseListingItemLink(item.dataEntry.data.slotIndex)
             end
 
-            -- If Item is in Store Buy Back List
-            if parentName == "ZO_BuyBackListContents" then
-                return GetBuybackItemLink(item.dataEntry.data.slotIndex)
-            end
-
-            if parentName == "ZO_BuyBackListContents" then
-                return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
-            end
             --
             -- If Parent is none of the Above
-            --return nil
+            return nil
 
             -- Uncomment line below to show parents
             --return GetItemLink(item.dataEntry.data.bagId, item.dataEntry.data.slotIndex, LINK_STYLE_DEFAULT)
