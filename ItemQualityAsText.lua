@@ -160,7 +160,6 @@ function IQAT:GetItemLink(item)
             if parentName == "ZO_InteractWindowRewardArea" then
                 local mouseOverControl = moc()
                 rewardItem = mouseOverControl.index
-                d(GetQuestRewardItemLink(rewardItem, LINK_STYLE_DEFAULT))
                 return GetQuestRewardItemLink(rewardItem, LINK_STYLE_DEFAULT)
             end
 
