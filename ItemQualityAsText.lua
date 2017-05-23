@@ -59,8 +59,8 @@ function IQAT:UpdateTooltip(item, tooltip)
     -- Check item and selectedItem
     if not item or item:GetParent() == nil then
         return
-    else 
-        if item:GetParent():GetName() ~= "ZO_InteractWindowRewardArea" then 
+    else
+        if item:GetParent():GetName() ~= "ZO_InteractWindowRewardArea" then
             if not item.dataEntry or not item.dataEntry.data then
                 return
             end
