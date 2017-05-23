@@ -1,7 +1,7 @@
 ## Title: Item Quality as Text
 ## Description: Shows the quality of items as text in the item tooltip. Created by |c00C000Cavalier|r. Updated by |cFFCCCCinimicus|r.
-## Version: 1.3.0
+## Version: 1.3.1
 ## Author: Cavalier
-## APIVersion: 100018
+## APIVersion: 100019
 
 ItemQualityAsText.lua
